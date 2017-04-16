@@ -7,6 +7,8 @@ class VideoListItem extends Component {
     this.imageUrl = '';
     this.title = '';
     this.refreshData(this.props);
+    this.selectVideo = this.selectVideo.bind(this);
+    console.log('this.props', this.props);
   }
 
   refreshData(newProps) {
@@ -15,12 +17,18 @@ class VideoListItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('在 video_item 中，nextProps:', nextProps);
     this.refreshData(nextProps);
+  }
+
+  selectVideo() {
+    this.props.onVideoSelect(this.props.video);
+    console.log('this.props.video', this.props.video);
   }
 
   render() {
     return (
-      <li className="list-group-item">
+      <li onClick={this.selectVideo} className="list-group-item">
         <div className="video-list media">
           <div className="media-left">
             <img className="media-object" src={this.imageUrl}/>

@@ -9,16 +9,17 @@ class VideoList extends Component {
     this.refreshData(this.props);
   }
 
-  refreshData(newProsp) {
-    this.videoItems = newProsp.videos.map((video) => {
+  refreshData(newProps) {
+    console.log('在 video_list 中，newProps:', newProps);
+    this.videoItems = newProps.videos.map((video) => {
       return (
         <VideoListItem 
-          onVideoClick={newProsp.onVideoClick}
+          onVideoSelect={newProps.onVideoSelect}
           key={video.etag} 
           video={ video } />
       );
     });
-    console.log('videoItems', this.videoItems);
+    // console.log('videoItems', this.videoItems);
   }
 
   componentWillReceiveProps(nextProos) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
+import _ from 'lodash';
 import YTSearch from 'youtube-api-search';
 
 import SearchBar from './components/search_bar';
@@ -16,8 +16,15 @@ class App extends Component {
       videos: [],
       selectedVideo: null 
     };
-    
-    YTSearch({key: API_KEY, term: 'surboards'}, (videos) => {
+
+    this.onSelecteVideo = this.onSelecteVideo.bind(this);
+    this.videoSearch = this.videoSearch.bind(this);
+
+    this.videoSearch('surfboards');
+  }
+  
+  videoSearch(term) {
+    YTSearch({key: API_KEY, term: term}, (videos) => {
       console.log('search result', videos);
       this.setState({
         videos,
@@ -28,28 +35,25 @@ class App extends Component {
     });
   }
 
+  onSelecteVideo(selectedVideo) {
+    console.log('确认选择的视频：', selectedVideo);
+    this.setState({selectedVideo});
+  }
+
   render() {
+    // 使用 _.debounce 生成的函数 _videoSearch，最多只能每 300ms 调用一次
+    const _videoSearch = _.debounce(this.videoSearch, 300);
     return (
       <div>
-        <h2>Hi! Thomas</h2>
-        <SearchBar />
+        {/*<h2>Hi! Thomas</h2>*/}
+        <SearchBar onSearchTermChange={_videoSearch}/>
         <VideoDetail video={this.state.selectedVideo}/>
         <VideoList 
-          onVideoSelect={selectVideo => this.setState({selectVideo})}
+          onVideoSelect={this.onSelecteVideo}
           videos={this.state.videos}/>
       </div>
     );
   }
 }
-
-// const App = () => {
-//   // 对于多行 JSX，用小括号将其扩起来
-//   return (
-//     <div>
-//       <h2>Hi! Thomas</h2>
-//       <SearchBar />
-//     </div>
-//   );
-// }
 
 ReactDOM.render(<App />, document.querySelector('.container'));
