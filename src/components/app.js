@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import SearchBar from '../containers/search_bar';
-import WeatherList from '../containers/weather_list';
 
 export default class App extends Component {
   render() {
     return (
       <div>
-        React simple starter
-        <SearchBar />
-        <WeatherList />
+        {/*不加 this.props.children 的话，字路由的组件找不到要渲染的元素*/}
+        {this.props.children}
       </div>
     );
   }
